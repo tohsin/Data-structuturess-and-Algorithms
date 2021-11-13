@@ -1,0 +1,25 @@
+6
+3 3
+WWW 
+WWW 
+WWW 
+3 3 
+WWW 
+WBB 
+WBB
+2 3
+WWW
+BBB
+3 2
+WW
+BB
+WW
+3 3
+WWW
+WWB
+WBB
+4 3
+WWW
+WBW
+BBB
+BBB
