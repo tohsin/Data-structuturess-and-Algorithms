@@ -1,31 +1,28 @@
 #a123bc34d8ef34
 def numDifferentIntegers(word):
-        
-        is_in_num=False
-        for x in range(len(word)):
-            if word[x].isdigit():
-                is_in_num=True
-            else:
-                if is_in_num 
-            
-    
-    
         cache=set()
-        i=0
-        while (i<len(word)):
+        is_in_num=False
+        start_index=0
+        for i in range(len(word)):
             value=word[i]
-            if word[i].isdigit():#i=1 ,j=2 j=3 j=4
-                for j in range(i+1,len(word)):
-                    if not (word[j].isdigit()):
-                        cache.add(word[i:j])
-                        i=j
-                        break
-                    
-            else:
-                i+=1
+            if word[i].isdigit() and not is_in_num:
+                is_in_num=True
+                start_index=i
+            # elif word[i].isdigit() and is_in_num:
+            #     #do nothing
+            #     pass
+            elif  (not word[i].isdigit()) and is_in_num:
+                is_in_num=False
+                cache.add(int(word[start_index:i]))
+        if is_in_num:
+            cache.add(int(word[start_index:i+1]))
         print(len(cache))
-        return (len(cache))
+        return len(cache)
+                #begin caching
+                
+         
+    
+    
+ 
 
-
-
-numDifferentIntegers('a123bc34d8ef34')
+numDifferentIntegers("a123bc34d8ef34")
