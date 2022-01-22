@@ -1,52 +1,35 @@
-class node:
-    def __init__(self,dist) -> None:
-        self.shortest_dist=dist
-        self.shortest_dist_truwall=None
-        
-def solution(graph):
-    inf=float('inf')
-    w=len(graph[0])
-    h=len(graph)
-    dp={}
-    trigger=False
-    dp[ ( h-1,w-1) ]=node(1)
-    for col in range(w-2,-1,-1):
-        prevnode=dp[ (h-1, col+1)]
-        if trigger:
-            dp[ ( h-1, col) ]=node(inf)
-            continue
-        if graph[h-1][col]==1:
-            if prevnode.shortest_dist_truwall==None:
-                dp[ ( h-1, col) ]= node(prevnode.shortest_dist +1)
-                dp[ ( h-1, col) ].shortest_dist_truwall= 1+prevnode.shortest_dist
-            else:
-                trigger=True
-                dp[ ( h-1, col) ]= node(inf)
-        else:
-            dp[ ( h-1, col) ]= node(prevnode.shortest_dist +1)
-    trigger=False
-    for row in range(h-2,-1,-1):  
-        prevnode=dp[ (row+1, w-1)]
-        if trigger:
-            dp[ ( row, w-1) ]=node(inf)
-            continue
-        if graph[row][w-1]==1:
-            if prevnode.shortest_dist_truwall==None:
-                dp[ ( row, w-1) ]= node(prevnode.shortest_dist +1)
-                dp[ ( row, w-1) ].shortest_dist_truwall= 1+prevnode.shortest_dist
-            else:
-                trigger=True
-                dp[ ( row, w-1) ]= node(inf)
-        else:
-            dp[ ( row, w-1 ) ]= node(prevnode.shortest_dist +1)
-            if prevnode.shortest_dist_truwall!=None:
-                dp[ ( row, w-1 ) ].shortest_dist_truwall=prevnode.shortest_dist_truwall+1
 
-    l=dp
-        
-    
-    
-    
-    
-    
-solution(graph=[[0, 1, 1, 0], [0, 0, 0, 1], [1, 1, 0, 0], [1, 1, 1, 0]])
+def compute(row, col, grid):
+    w = len(grid[0])
+    h = len(grid)
+    cache = [[None for i in range(w)] for i in range(h)]
+    cache[row][col] = 1
+
+    q = [(row, col)]
+    while len(q)!=0:
+        x, y = q.pop(0)
+        for i in [[1,0],[-1,0],[0,-1],[0,1]]:
+          move_x, move_y = x + i[0], y + i[1]
+          if 0 <=move_x  < h and 0 <= move_y < w:
+            if cache[move_x][move_y] is None:
+                cache[move_x][move_y] = cache[x][y] + 1
+                if grid[move_x][move_y] == 1 :
+                  continue
+                q.append((move_x, move_y)) 
+                  
+    return cache
+
+def solution(map):
+  w = len(map[0])
+  h = len(map)
+  
+  end = compute(0, 0, map)
+  source = compute(h-1, w-1, map)
+  
+
+  ans = float('inf')
+  for i in range(h):
+      for j in range(w):
+          if end[i][j] and source[i][j]:
+              ans = min(end[i][j] + source[i][j] - 1, ans)
+  return ans
